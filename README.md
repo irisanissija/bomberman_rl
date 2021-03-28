@@ -26,4 +26,4 @@ the game on a field with crates. For the kernel PCA transformation and training,
 python main.py play --agents rule_based_agent_pca_sarsa --no-gui --train 1 --n-rounds 25000
 ```
 Then, custom_sarsa_pca_agent/pca.py and custom_sarsa_pca_agent/train_with_saved_states.py
-were executed.
+were run.
