@@ -75,22 +75,15 @@ def act(self, game_state: dict) -> str:
     :param game_state: The dictionary that describes everything on the board.
     :return: The action to take as a string.
     """
-    currentRandomProb = -1
-    # TODO Exploration vs exploitation
-     # exploration in rule_based_agent/callbacks.py
+    currentRandomProb = 0
     if self.train and random.random() < currentRandomProb:
         self.logger.debug("Choosing action purely at random.")
         return np.random.choice(ACTIONS)
 
-    elif self.train and not self.model_initialised:
-        self.logger.debug("Model not yet initialised, choosing action purely at random.")
-        # 80%: walk in any direction. 10% wait. 10% bomb.
-        return np.random.choice(ACTIONS)  # wait and bomb excluded for now
-
     self.logger.debug("Querying model for action.")
     x = state_to_features(game_state)
     response = np.ravel([model.predict([x.ravel()]) for model in self.model])
-    # print(x)
+
     if np.abs(np.sort(response)[-1] - np.sort(response)[-2]) < 0.01:
         index = np.random.choice(np.argsort(response)[-2:])
         return ACTIONS[index]
@@ -170,19 +163,7 @@ def state_to_features(game_state: dict) -> np.array:
         # distance can be negative
         assert len(features) == 2
     
-    
-    """ environment = np.zeros(4)  # the surrounding 4 fields (up, down, left, right)
-    if field[position_x - 1, position_y] == 0:
-        environment[0] = 1  # free space = 1
-    if field[position_x + 1, position_y] == 0:
-        environment[1] = 1
-    if field[position_x, position_y - 1] == 0:
-        environment[2] = 1
-    if field[position_x, position_y + 1] == 0:
-        environment[3] = 1
-    
-    features = np.append(features, environment)
-    """
+
 
     changedField = field
     for coin in game_state['coins']:

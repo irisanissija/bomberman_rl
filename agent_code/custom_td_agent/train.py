@@ -29,12 +29,7 @@ GAMMA = 0.95
 POSITION_HISTORY_SIZE = 5
 
 FEATURE_HISTORY_SIZE = 500  # number of features to use for training
-# train with:
-# python main.py play --agents rule_based_agent --no-gui --train 1 --n-rounds 1200
-# with random_prob = 0.7 in rule_based_agent/callbacks.py
 
-# Events
-PLACEHOLDER_EVENT = "PLACEHOLDER"
 
 
 def setup_training(self):
@@ -56,10 +51,10 @@ def setup_training(self):
                                       random_state=0, loss='ls', warm_start=True, init='zero') for _ in ACTIONS]
         self.model_initialised = False
     else:
-        self.model_initialised = True  # TODO check if model is fitted
+        self.model_initialised = True 
         for index, model in enumerate(self.model):
             try:
-                model.predict([[0,0,0,0,0,0,0,0,0,0]])
+                model.predict([[0,0,0,0,0,0,0,0,0,0]]) # returns not fitted error if model is not fitted yet
             except NotFittedError:
                 self.model_not_fitted[index] = True
 
@@ -96,7 +91,6 @@ def game_events_occurred(self, old_game_state: dict, self_action: str, new_game_
         current_position = new_game_state['self'][3]
         if len(self.position_history) > 4 and current_position == self.position_history[1] and current_position == self.position_history[3]:
             events.append(e.STUCK_IN_LOOP)
-            #print('appended loop reward')
 
         self.position_history.append(current_position)
 
@@ -140,12 +134,12 @@ def end_of_round(self, last_game_state: dict, last_action: str, events: List[str
             # SARSA
             old_features = state_to_features(last_game_state)
             x = old_features
-            y = reward_from_events(self, events)
+            y = reward_from_events(self, events) # expected future reward for final state is 0, therefor we can just take the current reward as a target
 
         self.x[index].append(x)
         self.y[index].append(y)
     
-    """ for i, x in enumerate(self.x):
+    for i, x in enumerate(self.x):
         print(len(x))
         if len(x) == FEATURE_HISTORY_SIZE:
             print("Fitting model")
@@ -153,7 +147,7 @@ def end_of_round(self, last_game_state: dict, last_action: str, events: List[str
             self.x[i].clear()
             self.y[i].clear()
             self.model_not_fitted[i] = False
-        self.model_initialised = True """
+        self.model_initialised = True
 
     with open('steps.txt', 'a') as steps_log:
         steps_log.write(str(last_game_state['step']) + "\t")
@@ -175,21 +169,18 @@ def reward_from_events(self, events: List[str]) -> int:
     """
     game_rewards = {
         e.COIN_COLLECTED: 10,
-        # e.KILLED_OPPONENT: 5,
         e.INVALID_ACTION: -3,
         e.DECREASED_DISTANCE: 1,
         e.INCREASED_DISTANCE: -0.5,  # to avoid loops?
         e.WAITED: -0.5,
         e.BOMB_DROPPED: 0.1,
         e.CRATE_DESTROYED: 5,
-        # e.GOT_KILLED: -5,
         e.KILLED_SELF: -1,
         e.MOVED_DOWN: -0.5,
         e.MOVED_UP: -0.5,
         e.MOVED_LEFT: -0.5,
         e.MOVED_RIGHT: -0.5,
         e.STUCK_IN_LOOP: -5,
-        # PLACEHOLDER_EVENT: -.1  # idea: the custom event is bad
     }
     reward_sum = 0
     for event in events:
