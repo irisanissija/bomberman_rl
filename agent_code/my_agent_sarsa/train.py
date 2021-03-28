@@ -64,7 +64,7 @@ def game_events_occurred(self, old_game_state: dict, self_action: str, new_game_
     Updates the transition, adds the old game state to the features, calculates the
     corresponding target with SARSA and adds it to the targets.
 
-    :param self: This object is passed to all callbacks and you can set arbitrary values.
+    :param self: The same object that is passed to all of your callbacks.
     :param old_game_state: The state that was passed to the last call of `act`.
     :param self_action: The action that you took.
     :param new_game_state: The state the agent is in now.
@@ -126,6 +126,9 @@ def end_of_round(self, last_game_state: dict, last_action: str, events: List[str
     Fits and stores the model if enough features have been collected for each action.
 
     :param self: The same object that is passed to all of your callbacks.
+    :param last_game_state: The state that was passed to the last call of `act`.
+    :param last_action: The action that you took.
+    :param events: The events that occurred after the last action
     """
     self.logger.debug(f'Encountered event(s) {", ".join(map(repr, events))} in final step')
 
@@ -186,10 +189,11 @@ def end_of_round(self, last_game_state: dict, last_action: str, events: List[str
 
 def reward_from_events(self, events: List[str]) -> int:
     """
-    *This is not a required function, but an idea to structure your code.*
+    Calculates the sum of rewards for the events that occurred in a step
 
-    Here you can modify the rewards your agent get so as to en/discourage
-    certain behavior.
+    :param self: The same object that is passed to all of your callbacks.
+    :param events: List of events that occurred in a step
+    :return: int
     """
     game_rewards = {
         e.COIN_COLLECTED: 3,
