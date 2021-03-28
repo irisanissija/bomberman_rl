@@ -7,9 +7,9 @@ from random import shuffle
 
 ACTIONS = ['UP', 'RIGHT', 'DOWN', 'LEFT', 'WAIT', 'BOMB']
 BASE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-MODEL_PATH = os.path.join(BASE_PATH, 'my_agent_pca_sarsa/my-saved-model_rule.pt')
+MODEL_PATH = os.path.join(BASE_PATH, 'custom_sarsa_pca_agent/my-saved-model_rule.pt')
 
-PCA_TRANSFORMER_PATH = os.path.join(BASE_PATH, 'my_agent_pca_sarsa/pca_transformer_1_agent_crates.pt')
+PCA_TRANSFORMER_PATH = os.path.join(BASE_PATH, 'custom_sarsa_pca_agent/pca_transformer_1_agent_crates.pt')
 
 
 def setup(self):

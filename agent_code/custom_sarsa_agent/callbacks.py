@@ -7,7 +7,7 @@ from random import shuffle
 
 ACTIONS = ['UP', 'RIGHT', 'DOWN', 'LEFT', 'WAIT', 'BOMB']
 BASE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-MODEL_PATH = os.path.join(BASE_PATH, 'my_agent_sarsa/my-saved-model_sarsa.pt')
+MODEL_PATH = os.path.join(BASE_PATH, 'custom_sarsa_agent/my-saved-model_sarsa.pt')
 
 
 def setup(self):

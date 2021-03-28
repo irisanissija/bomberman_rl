@@ -8,15 +8,15 @@ ACTIONS = ['UP', 'RIGHT', 'DOWN', 'LEFT', 'WAIT', 'BOMB']
 ACTION_INDEX = {'UP': 0, 'RIGHT': 1, 'DOWN': 2, 'LEFT': 3, 'WAIT': 4, 'BOMB': 5}
 
 BASE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-MODEL_PATH = os.path.join(BASE_PATH, 'my_agent_pca_sarsa/my-saved-model_rule.pt')
-STATE_PATH = os.path.join(BASE_PATH, 'my_agent_pca_sarsa/states_1_agent_crates.pt')
-NEXT_STATE_PATH = os.path.join(BASE_PATH, 'my_agent_pca_sarsa/next_states_1_agent_crates.pt')
-NEXT_ACTION_INDEX_PATH = os.path.join(BASE_PATH, 'my_agent_pca_sarsa/next_action_index_1_agent_crates.pt')
-REWARD_PATH = os.path.join(BASE_PATH, 'my_agent_pca_sarsa/rewards_1_agent_crates.pt')
+MODEL_PATH = os.path.join(BASE_PATH, 'custom_sarsa_pca_agent/my-saved-model_rule.pt')
+STATE_PATH = os.path.join(BASE_PATH, 'custom_sarsa_pca_agent/states_1_agent_crates.pt')
+NEXT_STATE_PATH = os.path.join(BASE_PATH, 'custom_sarsa_pca_agent/next_states_1_agent_crates.pt')
+NEXT_ACTION_INDEX_PATH = os.path.join(BASE_PATH, 'custom_sarsa_pca_agent/next_action_index_1_agent_crates.pt')
+REWARD_PATH = os.path.join(BASE_PATH, 'custom_sarsa_pca_agent/rewards_1_agent_crates.pt')
 
-PCA_TRANSFORMER_PATH = os.path.join(BASE_PATH, 'my_agent_pca_sarsa/pca_transformer_1_agent_crates.pt')
-TRANSFORMED_STATES_PATH = os.path.join(BASE_PATH, 'my_agent_pca_sarsa/pca_transformed_states_1_agent_crates.pt')
-TRANSFORMED_NEXT_STATES_PATH = os.path.join(BASE_PATH, 'my_agent_pca_sarsa/pca_transformed_states_1_agent_crates.pt')
+PCA_TRANSFORMER_PATH = os.path.join(BASE_PATH, 'custom_sarsa_pca_agent/pca_transformer_1_agent_crates.pt')
+TRANSFORMED_STATES_PATH = os.path.join(BASE_PATH, 'custom_sarsa_pca_agent/pca_transformed_states_1_agent_crates.pt')
+TRANSFORMED_NEXT_STATES_PATH = os.path.join(BASE_PATH, 'custom_sarsa_pca_agent/pca_transformed_states_1_agent_crates.pt')
 
 N_COMPONENTS = 20  # dimension of the output
 
