@@ -5,7 +5,7 @@ import numpy as np
 
 ACTIONS = ['UP', 'RIGHT', 'DOWN', 'LEFT', 'WAIT', 'BOMB']
 BASE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-MODEL_PATH = os.path.join(BASE_PATH, 'my_agent_rule/my-saved-model_rule.pt')
+MODEL_PATH = os.path.join(BASE_PATH, 'custom_td_agent/my-saved-model_rule.pt')
 
 random_prob = 0
 

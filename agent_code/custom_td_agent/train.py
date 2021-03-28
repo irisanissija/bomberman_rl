@@ -18,7 +18,7 @@ ACTIONS = ['UP', 'RIGHT', 'DOWN', 'LEFT' , 'WAIT', 'BOMB']
 ACTION_INDEX = {'UP': 0, 'RIGHT': 1, 'DOWN': 2, 'LEFT': 3, 'WAIT': 4, 'BOMB': 5}
 
 BASE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-MODEL_PATH = os.path.join(BASE_PATH, 'my_agent_rule/my-saved-model_rule.pt')
+MODEL_PATH = os.path.join(BASE_PATH, 'custom_td_agent/my-saved-model_rule.pt')
 
 from sklearn.utils.validation import check_is_fitted
 
