@@ -24,6 +24,7 @@ def setup(self):
 
 def act(self, game_state: dict):
     
+    # pass the whole training process to the training function. This needs to be adjusted in case of the agent being handed in as a solution.
     if self.train:
         action = do_training_step(self, game_state)
         return action
@@ -31,5 +32,6 @@ def act(self, game_state: dict):
     self.logger.debug("Querying model for action")
     action_index = self.model.predict_action(game_state)
     model_action = self.model.actions[action_index]
-    #self.logger.debug("Model returnd action: ", model_action)
+
+    
     return model_action
