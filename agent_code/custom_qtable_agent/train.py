@@ -18,10 +18,6 @@ from .helper import getOwnPosition
 Transition = namedtuple('Transition',
                         ('state', 'action', 'next_state', 'reward'))
 
-# Hyper parameters -- DO modify
-TRANSITION_HISTORY_SIZE = 3  # keep only ... last transitions
-RECORD_ENEMY_TRANSITIONS = 1.0  # record enemy transitions with probability ...
-LEARNING_RATE = 0.001
 
 # Events
 STUCK_IN_LOOP= "STUCK_IN_LOOP"
@@ -93,16 +89,11 @@ def game_events_occurred(self, old_game_state: dict, self_action: str, new_game_
     :param events: Diff between old and new game_state
     """
 
-    """    self.logger.debug(f'Encountered game event(s) {", ".join(map(repr, events))} in step {new_game_state["step"]}')
-    self.logger.debug(f'The total reward for the events was', reward_from_events(self, events)) """
-
-    """ current_transition = Transition(state_to_features(old_game_state), self_action, state_to_features(new_game_state), reward_from_events(self, events)) """
-
     newPosition = getOwnPosition(new_game_state)
 
+    # add loop reward if needed
     total_events = addAuxiliaryEvents(self, newPosition, events)
 
-    # here we could add some events to add rewards
     rewardsum = reward_from_events(self, total_events)
 
     self.episodeReward += rewardsum
@@ -111,12 +102,6 @@ def game_events_occurred(self, old_game_state: dict, self_action: str, new_game_
 
     # update models last position AFTER handing out auxilliary rewards
     self.model.updateLastPositions(newPosition)
-
-    """ self.transitions.append(current_transition)
-    f = open("demo.txt", "a")
-    if current_transition.action != None:
-        f.write(current_transition.action)
-    f.close() """
 
 
 def end_of_round(self, last_game_state: dict, last_action: str, events: List[str]):
@@ -134,11 +119,15 @@ def end_of_round(self, last_game_state: dict, last_action: str, events: List[str
 
     score = last_game_state['self'][1]
     
+    # log scores
     with open("scores.txt", "a") as scores_log:
         scores_log.write(str(score) + "\t")
-
+    
+    # log rewards
     with open('rewards.txt', 'a') as reward_log:
         reward_log.write(str(self.episodeReward) + "\t")    
+
+    # log steps
     with open('steps.txt', 'a') as steps_log:
         steps_log.write(str(last_game_state['step']) + "\t")
 
@@ -180,7 +169,7 @@ def addAuxiliaryEvents(self, newPosition: tuple, events: List[str]):
     The idea of this function is to add some auxiliary rewards in order to improve the agents behavior
     """
     newEvents = events
-    # Idea: add a penalty if the same place has been visited in the last two states. This should help to prevent loops
+    # Idea: add a penalty if the same place has been visited in the last two states. This should help to prevent loops -> possiblie increase position history size
     position = newPosition
     if position in self.model.lastPositions:
         newEvents.append(STUCK_IN_LOOP)

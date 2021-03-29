@@ -41,7 +41,6 @@ def setup_training(self):
 
     :param self: This object is passed to all callbacks and you can set arbitrary values.
     """
-    # self.steps = np.array([0])
 
     self.x = [deque(maxlen=FEATURE_HISTORY_SIZE) for _ in ACTIONS]  # features
     self.y = [deque(maxlen=FEATURE_HISTORY_SIZE) for _ in ACTIONS]  # targets
@@ -75,7 +74,7 @@ def game_events_occurred(self, old_game_state: dict, self_action: str, new_game_
     self.logger.debug(f'Encountered game event(s) {", ".join(map(repr, events))} in step {new_game_state["step"]}')
 
     if old_game_state is not None and new_game_state is not None and self_action is not None:  # TODO discard if states are same?
-        # state_to_features is defined in callbacks.py
+
         old_features = state_to_features(old_game_state)
         new_features = state_to_features(new_game_state)
         if new_features[0] ** 2 + new_features[1] ** 2 < old_features[0] ** 2 + old_features[1] ** 2:
@@ -94,7 +93,6 @@ def game_events_occurred(self, old_game_state: dict, self_action: str, new_game_
         self.x[index].append(x)
         self.y[index].append(y)
 
-    # self.steps[0] += 1
 
 
 def end_of_round(self, last_game_state: dict, last_action: str, events: List[str]):
@@ -136,16 +134,6 @@ def end_of_round(self, last_game_state: dict, last_action: str, events: List[str
         with open(MODEL_PATH, "wb") as file:
             pickle.dump(self.model, file)
 
-    #self.steps = np.insert(self.steps, 0, 0)
-
-    #if len(self.steps) == 5001:
-    #    plt.hist(self.steps[1:], density=True)
-    #    plt.xlabel("Steps per round")
-    #    plt.xlim((30, 130))
-    #    plt.savefig("steps_per_round_rule_based_agent.pdf", format="pdf")
-    #    print(np.mean(self.steps[1:]), np.std(self.steps[1:]))
-
-    # print([len(x) for x in self.x])
 
 
 def reward_from_events(self, events: List[str]) -> int:
@@ -157,12 +145,10 @@ def reward_from_events(self, events: List[str]) -> int:
     """
     game_rewards = {
         e.COIN_COLLECTED: 3,
-        # e.KILLED_OPPONENT: 5,
         e.INVALID_ACTION: -3,
         e.WAITED: -0.2,
         e.DECREASED_DISTANCE: 1,
         e.INCREASED_DISTANCE: -0.5,
-        # e.GOT_KILLED: -5,
         e.KILLED_SELF: -5
     }
     reward_sum = 0

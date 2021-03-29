@@ -7,7 +7,7 @@ import pickle
 
 class CustomModel:
 
-    modelDict = {(0,0,0,0):[0,0,0,0,0,0,0,0,0,0,0,0,0,0]}
+    modelDict = {(0,0,0,0):[0,0,0,0,0,0,0,0,0,0,0,0,0,0]} # initial setting, needs to be adjustet with further features
     qDictFileName = str
     gamma: int
     alpha: int 
@@ -43,9 +43,6 @@ class CustomModel:
             action = np.argmax(qvalues)
         return action
 
-    def updateLastPositions(self, position: tuple):
-        self.lastPositions[0] = self.lastPositions[1]
-        self.lastPositions[1] = position
     
     def stateExistsInTable(self, state, table):
         return next((True for elem in table if np.array_equal(elem, state)), False)
@@ -54,8 +51,6 @@ class CustomModel:
 
         currentQTable = pickle.load(open(self.qDictFileName, "rb" ))
 
-        """ newTable = np.load(self.qTableFileName)
-        statesTable = np.load(self.stateTableFileName) """
         actionIndex = np.where(self.actions == action_taken)[0]        
         
         old_state_features = state_to_features(old_state)

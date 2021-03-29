@@ -39,33 +39,6 @@ def setup(self):
         self.logger.info('model loaded')
 
 
-def getRandomProb(game_state: dict):
-    gamesPlayed = game_state['round']
-    steps = game_state['step']
-
-
-    if gamesPlayed < 6000:
-        return 0
-
-    if gamesPlayed > 300 and steps < 11:
-        return 0
-    else:
-        if gamesPlayed > 25 and gamesPlayed < 100:
-            return 0.8
-        if gamesPlayed > 99 and gamesPlayed < 150:
-            return 0.7
-        if gamesPlayed > 149 and gamesPlayed < 200:
-            return 0.6
-        if gamesPlayed > 199 and gamesPlayed < 500:
-            return 0.5
-        if gamesPlayed > 499 and gamesPlayed < 1000:
-            return 0.3
-        if gamesPlayed > 1249 and gamesPlayed < 2500:
-            return 0.15
-        if gamesPlayed > 2499:
-            return 0.0
-
-
 def act(self, game_state: dict) -> str:
     """
     Your agent should parse the input, think, and take a decision.
@@ -75,22 +48,15 @@ def act(self, game_state: dict) -> str:
     :param game_state: The dictionary that describes everything on the board.
     :return: The action to take as a string.
     """
-    currentRandomProb = -1
-    # TODO Exploration vs exploitation
-     # exploration in rule_based_agent/callbacks.py
+    currentRandomProb = -1 # increase if exploitation vs exploration
     if self.train and random.random() < currentRandomProb:
         self.logger.debug("Choosing action purely at random.")
         return np.random.choice(ACTIONS)
 
-    elif self.train and not self.model_initialised:
-        self.logger.debug("Model not yet initialised, choosing action purely at random.")
-        # 80%: walk in any direction. 10% wait. 10% bomb.
-        return np.random.choice(ACTIONS)  # wait and bomb excluded for now
-
     self.logger.debug("Querying model for action.")
     x = state_to_features(game_state)
     response = np.ravel([model.predict([x.ravel()]) for model in self.model])
-    # print(x)
+
     if np.abs(np.sort(response)[-1] - np.sort(response)[-2]) < 0.01:
         index = np.random.choice(np.argsort(response)[-2:])
         return ACTIONS[index]
@@ -170,19 +136,7 @@ def state_to_features(game_state: dict) -> np.array:
         # distance can be negative
         assert len(features) == 2
     
-    
-    """ environment = np.zeros(4)  # the surrounding 4 fields (up, down, left, right)
-    if field[position_x - 1, position_y] == 0:
-        environment[0] = 1  # free space = 1
-    if field[position_x + 1, position_y] == 0:
-        environment[1] = 1
-    if field[position_x, position_y - 1] == 0:
-        environment[2] = 1
-    if field[position_x, position_y + 1] == 0:
-        environment[3] = 1
-    
-    features = np.append(features, environment)
-    """
+
 
     changedField = field
     for coin in game_state['coins']:

@@ -78,6 +78,8 @@ def state_to_features(game_state: dict) -> np.array:
     # and return them as a vector
     return tuple(stacked_channels.reshape(-1))
 
+
+# helper function
 def action_to_numeric(actions: List[str], action):
     """
     this function maps an array string to a numeric list of actions 
@@ -87,12 +89,15 @@ def action_to_numeric(actions: List[str], action):
     actionIndex = actions.index(action)
     numericList[actionIndex] = 1
 
+# helper function
 def getGameNumberFromState(game_state: dict):
     return game_state['round']
 
+# helper function
 def getStepsFromState(game_state:dict):
     return game_state['step']
 
+# helper function
 def getOwnPosition(game_state:dict):
     if game_state is not None:
         return game_state['self'][3]
@@ -100,6 +105,9 @@ def getOwnPosition(game_state:dict):
         return (0,0)
 
 def getSurroundingFields(field, position):
+
+    # test for feature engineering to get further environment of the agent, no improve to current features
+
     myX = position[0]
     myY = position[1]
 
@@ -112,26 +120,15 @@ def getSurroundingFields(field, position):
     surrounding.append(field[myX-1, myY+1])
     surrounding.append(field[myX, myY+1])
     surrounding.append(field[myX+1, myY+1])
-    """     surrounding.append(field[myX-2, myY-2])
-    surrounding.append(field[myX-1, myY-2])
-    surrounding.append(field[myX, myY-2])
-    surrounding.append(field[myX+1, myY-2])
-    surrounding.append(field[myX+2, myY-2])
-    surrounding.append(field[myX-2, myY-1])
-    surrounding.append(field[myX+2, myY-1])
-    surrounding.append(field[myX-2, myY])
-    surrounding.append(field[myX+2, myY])
-    surrounding.append(field[myX-2, myY+1])
-    surrounding.append(field[myX+2, myY+1])
-    surrounding.append(field[myX-2, myY+2])
-    surrounding.append(field[myX-1, myY+2])
-    surrounding.append(field[myX, myY+2])
-    surrounding.append(field[myX+1, myY+2])
-    surrounding.append(field[myX+2, myY+2]) """
+
 
     return surrounding
 
 def directionWithMostCoins(position, coins):
+
+    # idea was to get the direction with the most coins to indicate the agent where he should move, doesn't work yet
+    # TODO: improve idea
+
     directions = [0,0,0,0]
     myX = position[0]
     myY = position[1]
