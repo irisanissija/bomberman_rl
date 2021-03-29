@@ -39,33 +39,6 @@ def setup(self):
         self.logger.info('model loaded')
 
 
-def getRandomProb(game_state: dict):
-    gamesPlayed = game_state['round']
-    steps = game_state['step']
-
-
-    if gamesPlayed < 6000:
-        return 0
-
-    if gamesPlayed > 300 and steps < 11:
-        return 0
-    else:
-        if gamesPlayed > 25 and gamesPlayed < 100:
-            return 0.8
-        if gamesPlayed > 99 and gamesPlayed < 150:
-            return 0.7
-        if gamesPlayed > 149 and gamesPlayed < 200:
-            return 0.6
-        if gamesPlayed > 199 and gamesPlayed < 500:
-            return 0.5
-        if gamesPlayed > 499 and gamesPlayed < 1000:
-            return 0.3
-        if gamesPlayed > 1249 and gamesPlayed < 2500:
-            return 0.15
-        if gamesPlayed > 2499:
-            return 0.0
-
-
 def act(self, game_state: dict) -> str:
     """
     Your agent should parse the input, think, and take a decision.
@@ -75,7 +48,7 @@ def act(self, game_state: dict) -> str:
     :param game_state: The dictionary that describes everything on the board.
     :return: The action to take as a string.
     """
-    currentRandomProb = 0
+    currentRandomProb = -1 # increase if exploitation vs exploration
     if self.train and random.random() < currentRandomProb:
         self.logger.debug("Choosing action purely at random.")
         return np.random.choice(ACTIONS)
